@@ -40,6 +40,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     }
 
     @Override
+    //扩展MVC消息转换器,解决后台Long类型数据到前端后，js解析丢失精度问题
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展MVC消息转换器...");
         // 创建消息转换器对象
