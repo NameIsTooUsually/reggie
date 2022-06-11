@@ -1,0 +1,7 @@
+package com.chenhao.reggie.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.chenhao.reggie.entity.Setmeal;
+
+public interface SetmealService extends IService<Setmeal> {
+}
