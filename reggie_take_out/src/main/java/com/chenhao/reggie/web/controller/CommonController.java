@@ -2,6 +2,7 @@ package com.chenhao.reggie.web.controller;
 
 import com.chenhao.reggie.utils.FileUtil;
 import com.chenhao.reggie.web.R;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.io.*;
  */
 @RestController
 @RequestMapping("/common")
+@Slf4j
 public class CommonController {
     //注入文件前缀
     @Value("${reggie.path}")
@@ -44,7 +46,7 @@ public class CommonController {
         file.transferTo(new File(basePath + nameWithPath + suffixName));
 
         //返回文件名
-        return R.success("文件上传成功", basePath + nameWithPath + suffixName);
+        return R.success("文件上传成功", nameWithPath + suffixName);
     }
 
 
@@ -70,7 +72,7 @@ public class CommonController {
         while ((len = bis.read(bytes)) > 0) {
             bos.write(bytes, 0, len);
         }
-
+        bos.flush();
         //文件传输完成，关闭资源
         bis.close();
     }
