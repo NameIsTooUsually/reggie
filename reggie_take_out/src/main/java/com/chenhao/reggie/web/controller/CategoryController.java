@@ -1,5 +1,6 @@
 package com.chenhao.reggie.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chenhao.reggie.entity.Category;
 import com.chenhao.reggie.service.CategoryService;
@@ -7,6 +8,8 @@ import com.chenhao.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author ChenHao
@@ -71,7 +74,7 @@ public class CategoryController {
         }
         return R.fail("分类删除失败");
     }
-
+    //更新菜品类型
     public R update(@RequestBody Category category){
         if(null!=category.getId()){
             //id不为空，则进行修改
@@ -86,4 +89,26 @@ public class CategoryController {
         return R.fail("参数异常");
     }
 
+    //根据类型查询
+    @GetMapping("/list")
+    public R<List<Category>> listByType(@RequestParam Long type){
+        log.info("根据类型查询，类型id为：{}",type);
+        //判断参数是否为空
+        if(null!=type){
+            //创建查询条件
+            LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
+            qw.eq(Category::getType,type);
+            qw.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+            //执行查询
+            List<Category> categories = categoryService.list(qw);
+
+            //判断
+            if(null!=categories){
+                return R.success("查询分类成功",categories);
+            }
+                return R.fail("查询分类失败");
+
+        }
+        return R.fail("参数异常");
+    }
 }
