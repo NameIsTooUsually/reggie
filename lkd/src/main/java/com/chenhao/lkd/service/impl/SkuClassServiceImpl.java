@@ -2,12 +2,9 @@ package com.chenhao.lkd.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chenhao.lkd.mapper.SkuClassMapper;
-import com.chenhao.lkd.mapper.SkuMapper;
-import com.chenhao.lkd.pojo.Sku;
 import com.chenhao.lkd.pojo.SkuClass;
-import com.chenhao.lkd.pojo.vo.SkuPageVo;
+import com.chenhao.lkd.pojo.vo.PageVo;
 import com.chenhao.lkd.service.SkuClassService;
-import com.chenhao.lkd.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +20,7 @@ public class SkuClassServiceImpl implements SkuClassService {
     @Autowired
     SkuClassMapper skuClassMapper;
     @Override
-    public SkuPageVo searchByPage(Integer pageIndex, Integer pageSize) {
+    public PageVo searchByPage(Integer pageIndex, Integer pageSize) {
         //判断页码和页面大小是否为null
         if (null == pageIndex) {
             pageIndex = 1;
@@ -43,7 +40,7 @@ public class SkuClassServiceImpl implements SkuClassService {
         skuClassMapper.selectPage(page,null);
 
         //设置返回参数
-        SkuPageVo<SkuClass> skuSkuPageVo = new SkuPageVo<>();
+        PageVo<SkuClass> skuSkuPageVo = new PageVo<>();
         skuSkuPageVo.setPageIndex(pageIndex);
         skuSkuPageVo.setPageSize(pageSize);
         skuSkuPageVo.setTotalCount(skuCount);

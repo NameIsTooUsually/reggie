@@ -1,5 +1,6 @@
 package com.chenhao.lkd.pojo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,9 +17,11 @@ import java.time.LocalDateTime;
 @Data
 @TableName("tb_sku")
 public class Sku {
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long skuId;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    private Long skuId;
     private String skuName;
     private String skuImage;
     private Integer price;

@@ -11,7 +11,7 @@ import java.util.List;
  * @date 2022/6/10 15:23
  */
 @Data
-public class SkuPageVo<T> {
+public class PageVo<T> {
     private Integer pageIndex;
     private Integer pageSize;
     private Integer totalPage;

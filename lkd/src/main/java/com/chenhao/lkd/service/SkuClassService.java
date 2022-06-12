@@ -1,6 +1,6 @@
 package com.chenhao.lkd.service;
 
-import com.chenhao.lkd.pojo.vo.SkuPageVo;
+import com.chenhao.lkd.pojo.vo.PageVo;
 
 /**
  * @author ChenHao
@@ -10,5 +10,5 @@ import com.chenhao.lkd.pojo.vo.SkuPageVo;
  */
 public interface SkuClassService {
 
-    SkuPageVo searchByPage(Integer pageIndex, Integer pageSize);
+    PageVo searchByPage(Integer pageIndex, Integer pageSize);
 }
