@@ -7,8 +7,11 @@ import com.chenhao.reggie.entity.dto.DishDto;
 import com.chenhao.reggie.service.DishService;
 import com.chenhao.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/dish")
@@ -87,6 +90,28 @@ public class DishController {
             return R.fail("修改参数失败");
         }
         return R.fail("参数异常");
+    }
+
+    //根据菜品分类id查询菜品信息
+    @GetMapping("/list")
+    public R<List<Dish>> findByCategoryId(Long categoryId,String name){
+        //判断id或name是否都为null
+        if(null!=categoryId|| StringUtils.isNotBlank(name)){
+            //设置查询条件
+            LambdaQueryWrapper<Dish> qw = new LambdaQueryWrapper<>();
+            qw.eq(null!=categoryId,Dish::getCategoryId,categoryId).like(null!=name,Dish::getName,name)
+                    .orderByAsc(Dish::getSort);
+            List<Dish> dishList = dishService.list(qw);
+
+            if(null!=dishList){
+                return R.success("查询成功",dishList);
+            }
+            return R.fail("查询失败");
+
+
+        }
+        return R.fail("参数异常");
+
     }
 
 }
