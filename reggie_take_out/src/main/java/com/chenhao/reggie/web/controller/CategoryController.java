@@ -6,6 +6,7 @@ import com.chenhao.reggie.entity.Category;
 import com.chenhao.reggie.service.CategoryService;
 import com.chenhao.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,6 +92,29 @@ public class CategoryController {
 
     //根据类型查询
     @GetMapping("/list")
+    public R<List<Category>> listByCondition( Category category){
+        log.info("根据条件查询查询，类型为：{},名称为：{}",category.getId(),category.getName());
+
+            //创建查询条件
+            LambdaQueryWrapper<Category> qw = new LambdaQueryWrapper<>();
+            //查询条件
+             //如果有类型就按类型查询
+            qw.eq(category.getType()!=null,Category::getType,category.getType())
+             //如果没有类型就按名称查询，
+            .like(StringUtils.isNotBlank(category.getName()),Category::getName,category.getName());
+            //排序条件
+            qw.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+            //执行查询
+            List<Category> categories = categoryService.list(qw);
+            //判断
+            if(null!=categories){
+                return R.success("查询分类成功",categories);
+            }
+            return R.fail("没有这种分类");
+
+    }
+   /* //根据类型查询
+    @GetMapping("/list")
     public R<List<Category>> listByType(@RequestParam Long type){
         log.info("根据类型查询，类型id为：{}",type);
         //判断参数是否为空
@@ -110,5 +134,5 @@ public class CategoryController {
 
         }
         return R.fail("参数异常");
-    }
+    }*/
 }
