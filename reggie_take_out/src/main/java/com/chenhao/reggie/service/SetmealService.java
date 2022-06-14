@@ -19,6 +19,6 @@ public interface SetmealService extends IService<Setmeal> {
     //批量修改套餐状态起售或停售
     boolean updateSetmealStatus(Integer status, Long[] ids);
 
-    //根据ids进行删除
+    //根据ids进行逻辑删除删除
     boolean deleteByIds(Long[] ids);
 }

@@ -13,11 +13,14 @@ import com.chenhao.reggie.service.SetmealDishService;
 import com.chenhao.reggie.service.SetmealService;
 import com.chenhao.reggie.web.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -91,6 +94,15 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     @Override
     public boolean addSetmeal(SetmealDto setmealDto) {
         //添加信息
+        //查询套餐名称是否已经使用
+        String name = setmealDto.getName();
+        LambdaQueryWrapper<Setmeal> qw = new LambdaQueryWrapper<>();
+        qw.eq(StringUtils.isNotBlank(name),Setmeal::getName,name);
+        Setmeal one = this.getOne(qw);
+        if(null!=one){
+            //该套餐名称已经存在
+            throw new BusinessException(setmealDto.getName()+"已经存在了");
+        }
         //创建Setmeal对象
         Setmeal setmeal = new Setmeal();
         //赋值基础信息
@@ -184,9 +196,11 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         return uadateResult;
     }
 
+    //根据ids进行逻辑删除
     @Override
+    @Transactional
     public boolean deleteByIds(Long[] ids) {
-        //先删除中间表中关联的菜品信息
+        /*//先删除中间表中关联的菜品信息
         for (Long id : ids) {
             //创建删除条件对象
             LambdaQueryWrapper<SetmealDish> qw = new LambdaQueryWrapper<>();
@@ -200,8 +214,28 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
             if(!removeResult){
                 return false;
             }
+        }*/
+
+        //判断是否是起售状态
+        LambdaQueryWrapper<Setmeal> qw = new LambdaQueryWrapper<>();
+        qw.in(Setmeal::getId,ids).eq(Setmeal::getStatus,1);
+        int count = this.count(qw);
+
+        if(count>0){
+            //说明有起售状态的套餐
+            throw new BusinessException("套餐状态在启用中，禁止删除！");
         }
 
-        return true;
+        //逻辑删除套餐信息
+        boolean removeResult = this.removeByIds(Arrays.asList(ids));
+        if(!removeResult){
+            return false;
+        }
+
+
+        //逻辑删除中间表信息
+        LambdaQueryWrapper<SetmealDish> rqw = new LambdaQueryWrapper<>();
+        rqw.in(SetmealDish::getSetmealId,ids);
+        return setmealDishService.remove(rqw);
     }
 }

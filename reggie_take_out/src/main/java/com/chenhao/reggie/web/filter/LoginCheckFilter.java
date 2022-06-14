@@ -33,7 +33,7 @@ public class LoginCheckFilter implements Filter {
         //获取URL地址
         String uri = req.getRequestURI();
         //设置需要放行的地址
-        String[] uris = {"/backend/**","/front/**","/employee/login","favicon.ico"};
+        String[] uris = {"/backend/**","/front/**","/employee/login","favicon.ico","/user/sendMsg","/user/login"};
 
         //判断该路径是否可以直接放行
         if(checkUri(uris,uri)){

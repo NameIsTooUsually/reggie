@@ -99,7 +99,7 @@ public class DishController {
         if(null!=categoryId|| StringUtils.isNotBlank(name)){
             //设置查询条件
             LambdaQueryWrapper<Dish> qw = new LambdaQueryWrapper<>();
-            qw.eq(null!=categoryId,Dish::getCategoryId,categoryId).like(null!=name,Dish::getName,name)
+            qw.eq(null!=categoryId,Dish::getCategoryId,categoryId).like(StringUtils.isNotBlank(name),Dish::getName,name)
                     .orderByAsc(Dish::getSort);
             List<Dish> dishList = dishService.list(qw);
 
@@ -107,7 +107,6 @@ public class DishController {
                 return R.success("查询成功",dishList);
             }
             return R.fail("查询失败");
-
 
         }
         return R.fail("参数异常");
