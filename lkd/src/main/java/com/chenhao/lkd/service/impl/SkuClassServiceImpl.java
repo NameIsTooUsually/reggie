@@ -1,5 +1,6 @@
 package com.chenhao.lkd.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chenhao.lkd.mapper.SkuClassMapper;
 import com.chenhao.lkd.pojo.SkuClass;
@@ -52,5 +53,20 @@ public class SkuClassServiceImpl implements SkuClassService {
         skuSkuPageVo.setCurrentPageRecords(page.getRecords());
 
         return skuSkuPageVo;
+    }
+
+    @Override
+    public boolean addSkuClass(SkuClass skuClass) {
+        //添加商品信息
+        int insert = skuClassMapper.insert(skuClass);
+        return insert>0;
+    }
+
+    @Override
+    public boolean updateSkuClass(Integer id, SkuClass skuClass) {
+        LambdaQueryWrapper<SkuClass> qw = new LambdaQueryWrapper<>();
+        qw.eq(SkuClass::getClassId,id);
+        int update = skuClassMapper.update(skuClass, qw);
+        return update>0;
     }
 }

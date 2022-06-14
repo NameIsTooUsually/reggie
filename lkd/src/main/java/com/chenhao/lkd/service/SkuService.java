@@ -16,6 +16,6 @@ public interface SkuService {
     //添加sku
     boolean addSku(Sku sku);
     //修改sku
-    boolean updateSkuById(Integer skuId, Sku sku);
+    boolean updateSkuById(Long skuId, Sku sku);
 
 }

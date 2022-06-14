@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chenhao.lkd.mapper.RegionMapper">
+
+    <select id="searchByPageAndName" resultType="com.chenhao.lkd.pojo.Region">
+        SELECT t1.id,t1.name as name,t1.remark,COUNT(*) AS nodeCount
+        FROM tb_region AS t1 LEFT JOIN tb_node AS t2
+        ON t1.id = t2.region_id
+        <where>
+            <if test="name != null and name !=''">
+                t1.name LIKE #{name}
+            </if>
+        </where>
+        GROUP BY t1.name
+        LIMIT #{pageIndex},#{pageSize}
+    </select>
+    <select id="searchTotal" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        (SELECT t1.id,t1.name,t1.remark,COUNT(t1.name) AS nodeCount
+        FROM tb_region AS t1 LEFT JOIN tb_node AS t2
+        ON t1.id = t2.region_id
+        GROUP BY t1.name) AS t3
+    </select>
+</mapper>

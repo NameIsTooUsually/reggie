@@ -1,7 +1,9 @@
 package com.chenhao.lkd.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.chenhao.lkd.mapper.RegionMapper;
 import com.chenhao.lkd.pojo.Region;
+import com.chenhao.lkd.pojo.dto.RegionDto;
 import com.chenhao.lkd.pojo.vo.PageVo;
 import com.chenhao.lkd.service.RegionServcie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class RegionServcieImpl implements RegionServcie {
         PageVo<Region> pageVo = new PageVo<>();
         pageVo.setCurrentPageRecords(list);
         pageVo.setPageSize(pageSize);
-        pageVo.setPageIndex(pageIndex);
+        pageVo.setPageIndex(pageIndex+1);
         int total = regionMapper.searchTotal();
         pageVo.setTotalPage(total);
 
@@ -51,10 +53,21 @@ public class RegionServcieImpl implements RegionServcie {
     }
 
     @Override
-    public boolean add(Region region) {
-
-        int result = regionMapper.add(region);
-
+    public boolean add(RegionDto regionDto) {
+        //创建region对象
+        Region region = new Region();
+        //设置参数
+        region.setId(IdWorker.getId());
+        region.setName(regionDto.getRegionName());
+        region.setRemark(regionDto.getRemark());
+        //添加
+        int result = regionMapper.insert(region);
         return result>0;
+    }
+
+    @Override
+    public Region getById(Long regionId) {
+        Region region = regionMapper.selectById(regionId);
+        return region;
     }
 }

@@ -49,7 +49,7 @@ public class SkuController {
     @PostMapping("/fileUpload")
     public String fileUpload(MultipartFile fileName) throws IOException {
         //1.访问前缀
-        String preFile = "http://localhost:9999//api/vm-service/sku/download?name=";
+        String preFile = "http://localhost:9999/api/vm-service/sku/download?name=";
         //2.获取文件的名称
         String imagName = fileName.getOriginalFilename();
         //3.1获取文件的后缀名
@@ -79,18 +79,6 @@ public class SkuController {
         } catch (FileNotFoundException e) {
             return;
         }
-
-        /*BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("C:/img/d/0/6"));
-        byte[] bytes1 = new byte[1024];
-         int len1 = 0;
-
-         while((len1 = bis.read(bytes1))>0){
-             System.out.println(len1);
-             bufferedOutputStream.write(bytes1,0,len1);
-         }
-        bufferedOutputStream.close();*/
-
-
         //获取服务器输出流
         BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 
@@ -102,6 +90,7 @@ public class SkuController {
             //响应数据
             bos.write(bytes,0,len);
         }
+        bos.flush();
         //释放资源
         bis.close();
     }
@@ -116,7 +105,7 @@ public class SkuController {
 
     //修改sku
     @PutMapping("/{skuId}")
-    public boolean updateSkuById(@PathVariable Integer skuId, @RequestBody Sku sku) {
+    public boolean updateSkuById(@PathVariable Long skuId, @RequestBody Sku sku) {
         //调用方法，修改sku
         return skuService.updateSkuById(skuId, sku);
 

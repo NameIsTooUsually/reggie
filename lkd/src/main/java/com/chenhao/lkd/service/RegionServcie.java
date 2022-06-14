@@ -1,6 +1,7 @@
 package com.chenhao.lkd.service;
 
 import com.chenhao.lkd.pojo.Region;
+import com.chenhao.lkd.pojo.dto.RegionDto;
 import com.chenhao.lkd.pojo.vo.PageVo;
 
 /**
@@ -12,5 +13,8 @@ import com.chenhao.lkd.pojo.vo.PageVo;
 public interface RegionServcie {
     PageVo searchByPageAndName(Integer pageIndex, Integer pageSize, String name);
 
-    boolean add(Region region);
+    boolean add(RegionDto region);
+
+    //根据id查询region信息
+    Region getById(Long regionId);
 }

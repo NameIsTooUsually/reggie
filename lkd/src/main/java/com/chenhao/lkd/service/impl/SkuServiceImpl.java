@@ -98,7 +98,7 @@ public class SkuServiceImpl implements SkuService {
      * @return
      */
     @Override
-    public boolean updateSkuById(Integer skuId, Sku sku) {
+    public boolean updateSkuById(Long skuId, Sku sku) {
         //判断id是否为空
         if(null!=skuId){
             //id不为空，调用方法修改

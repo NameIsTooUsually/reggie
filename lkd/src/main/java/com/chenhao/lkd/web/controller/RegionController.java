@@ -1,6 +1,7 @@
 package com.chenhao.lkd.web.controller;
 
 import com.chenhao.lkd.pojo.Region;
+import com.chenhao.lkd.pojo.dto.RegionDto;
 import com.chenhao.lkd.pojo.vo.PageVo;
 import com.chenhao.lkd.service.RegionServcie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class RegionController {
 
     //新增区域信息
     @PostMapping
-    public boolean add(@RequestBody Region region){
+    public boolean add(@RequestBody RegionDto region){
 
         if(null==region){
             return false;

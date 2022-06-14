@@ -1,22 +1,20 @@
-package com.chenhao.lkd.pojo;
+package com.chenhao.lkd.pojo.dto;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * @author ChenHao
  * @version 1.0
  * @description:
- * @date 2022/6/11 13:26
+ * @date 2022/6/13 15:55
  */
 @Data
-@TableName("tb_region")
-public class Region {
+public class RegionDto {
     private Long id;
-    private String name;
+    @TableField("name")
+    private String regionName;
     private String remark;
     @TableField(exist = false)
     private Integer nodeCount;
-
 }

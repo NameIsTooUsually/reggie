@@ -1,11 +1,10 @@
 package com.chenhao.lkd.web.controller;
 
+import com.chenhao.lkd.pojo.Node;
 import com.chenhao.lkd.pojo.vo.PageVo;
 import com.chenhao.lkd.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ChenHao
@@ -25,4 +24,13 @@ public class NodeController {
         PageVo pageVo = nodeService.searchPageByRegionId(pageIndex,pageSize,regionId);
         return pageVo;
     }
+    //添加node信息
+    @PostMapping
+    public boolean addNode(@RequestBody Node node){
+        if(null!=node){
+            boolean addResult = nodeService.addNode(node);
+        }
+        return false;
+    }
+
 }

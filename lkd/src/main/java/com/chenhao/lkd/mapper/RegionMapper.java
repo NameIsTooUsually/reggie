@@ -2,6 +2,7 @@ package com.chenhao.lkd.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.chenhao.lkd.pojo.Region;
+import com.chenhao.lkd.pojo.dto.RegionDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,8 +15,8 @@ public interface RegionMapper extends BaseMapper<Region> {
 
     int searchTotal();
 
-    //添加区域信息
+   /* //添加区域信息
     @Insert("insert into tb_region (name,remark) values(#{name},#{remark})")
-    int add(Region region);
+    int add(Region region);*/
 }
 
