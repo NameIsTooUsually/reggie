@@ -37,7 +37,8 @@ public class UserController {
         String phone = user.getPhone();
         if (null != phone && phone.length() == 11) {
             //生成验证码
-            Integer code = ValidateCodeUtils.generateValidateCode(6);
+            //Integer code = ValidateCodeUtils.generateValidateCode(6);
+            Integer code=1234;
             //添加验证码到session
             session.setAttribute(phone, code);
             System.out.println(code);
@@ -54,6 +55,8 @@ public class UserController {
         //获取code和phone参数
         String code = map.get("code");
         String phone = map.get("phone");
+
+
         //判断
         if (null != code && null != phone && phone.length() == 11) {
             //判断验证码是否正确,获取存在session中验证码
