@@ -131,4 +131,14 @@ public class AddressBookController {
 
         return R.fail("参数异常");
     }
+
+    //获取默认地址
+    @GetMapping("/default")
+    public R<AddressBook> defaultAddr(){
+        AddressBook addressBook = addressBookService.getDefault();
+        if(null!=addressBook){
+            return R.success("查询成功",addressBook);
+        }
+        return R.fail("查询失败");
+    }
 }

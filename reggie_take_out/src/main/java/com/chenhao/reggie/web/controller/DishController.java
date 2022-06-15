@@ -92,7 +92,27 @@ public class DishController {
         return R.fail("参数异常");
     }
 
+
     //根据菜品分类id查询菜品信息
+    @GetMapping("/list")
+    public R<List<DishDto>> findByCategoryId(Long categoryId,String name){
+        //判断id或name是否都为null
+        if(null!=categoryId|| StringUtils.isNotBlank(name)){
+
+            List<DishDto> dishList = dishService.listWithFlavor( categoryId, name);
+
+            if(null!=dishList){
+                return R.success("查询成功",dishList);
+            }
+            return R.fail("空空如也");
+
+        }
+        return R.fail("参数异常");
+
+    }
+
+
+   /* //根据菜品分类id查询菜品信息
     @GetMapping("/list")
     public R<List<Dish>> findByCategoryId(Long categoryId,String name){
         //判断id或name是否都为null
@@ -111,6 +131,6 @@ public class DishController {
         }
         return R.fail("参数异常");
 
-    }
+    }*/
 
 }

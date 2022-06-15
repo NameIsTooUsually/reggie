@@ -6,6 +6,8 @@ import com.chenhao.reggie.entity.Dish;
 import com.chenhao.reggie.entity.dto.DishDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public interface DishService extends IService<Dish> {
     boolean saveDishAndFlavor(DishDto dishDto);
@@ -20,4 +22,6 @@ public interface DishService extends IService<Dish> {
     //批量修改菜品状态
     boolean updateStatusByIds(Integer status, Long[] ids);
 
+    //根据分类id进行查询，并返回菜品口味
+    List<DishDto> listWithFlavor(Long categoryId, String name);
 }

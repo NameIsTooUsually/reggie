@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chenhao.reggie.entity.AddressBook;
 import com.chenhao.reggie.mapper.AddressBookMapper;
 import com.chenhao.reggie.service.AddressBookService;
-import com.chenhao.reggie.web.R;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,5 +33,15 @@ public class AddressBookServiceImpl extends ServiceImpl<AddressBookMapper, Addre
         boolean result = this.update(addressBook, qw);
 
         return result;
+    }
+
+    @Override
+    public AddressBook getDefault() {
+        //创建查询对象
+        LambdaQueryWrapper<AddressBook> qw = new LambdaQueryWrapper<>();
+        qw.eq(AddressBook::getIsDefault,1);
+
+        AddressBook addressBook = getOne(qw);
+        return addressBook;
     }
 }

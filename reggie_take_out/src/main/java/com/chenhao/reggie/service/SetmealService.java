@@ -6,6 +6,8 @@ import com.chenhao.reggie.entity.Setmeal;
 import com.chenhao.reggie.entity.dto.SetmealDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public interface SetmealService extends IService<Setmeal> {
     //查询套餐页面信息，包含所含菜品分类名称
@@ -21,4 +23,7 @@ public interface SetmealService extends IService<Setmeal> {
 
     //根据ids进行逻辑删除删除
     boolean deleteByIds(Long[] ids);
+    //根据分类id进行查询
+    List<Setmeal> listByCategoryId(Long categoryId);
+
 }

@@ -1,12 +1,15 @@
 package com.chenhao.reggie.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chenhao.reggie.entity.Setmeal;
 import com.chenhao.reggie.entity.dto.SetmealDto;
 import com.chenhao.reggie.service.SetmealService;
 import com.chenhao.reggie.web.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author ChenHao
@@ -121,6 +124,20 @@ public class SetmealController {
             }
             return R.fail("删除失败");
 
+        }
+        return R.fail("参数异常");
+    }
+
+    //根据分类id进行查询
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Long categoryId){
+        //判断categoryId是否异常
+        if (null!=categoryId) {
+            List<Setmeal> setmeals = setmealService.listByCategoryId(categoryId);
+            if(null!=setmeals&&setmeals.size()>0){
+                return R.success("查询成功",setmeals);
+            }
+            return R.fail("空空如也");
         }
         return R.fail("参数异常");
     }

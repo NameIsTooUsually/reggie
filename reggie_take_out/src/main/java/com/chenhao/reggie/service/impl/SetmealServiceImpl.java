@@ -238,4 +238,15 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
         rqw.in(SetmealDish::getSetmealId,ids);
         return setmealDishService.remove(rqw);
     }
+
+    @Override
+    public List<Setmeal> listByCategoryId(Long categoryId) {
+        //创建查询条件
+        LambdaQueryWrapper<Setmeal> qw = new LambdaQueryWrapper<>();
+        qw.eq(Setmeal::getCategoryId,categoryId).eq(Setmeal::getStatus,1);
+
+        List<Setmeal> setmeals = list(qw);
+
+        return setmeals;
+    }
 }
