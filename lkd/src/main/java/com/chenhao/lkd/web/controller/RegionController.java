@@ -39,4 +39,14 @@ public class RegionController {
 
 
     }
+
+    //修改区域信息
+    @PutMapping("/{id}")
+    public boolean update(@PathVariable Long id,@RequestBody RegionDto  region){
+        if(null!=id){
+            boolean updateResult = regionServcie.updateById(id,region);
+            return updateResult;
+        }
+        return false;
+    }
 }

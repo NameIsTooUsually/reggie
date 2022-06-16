@@ -1,19 +1,22 @@
 package com.chenhao.lkd.pojo.dto;
 
-import com.chenhao.lkd.pojo.Business;
 import com.chenhao.lkd.pojo.Node;
 import com.chenhao.lkd.pojo.Region;
+import com.chenhao.lkd.pojo.Vm;
+import com.chenhao.lkd.pojo.VmType;
 import lombok.Data;
 
 /**
  * @author ChenHao
  * @version 1.0
  * @description:
- * @date 2022/6/13 21:15
+ * @date 2022/6/16 19:40
  */
 @Data
-public class NodeDto extends Node {
+public class VmDto extends Vm {
+    //private Business businessType;
     private Region region;
-    private Business businessType;
-    private Integer vmCount;
+    private VmType type;
+    private Node node;
+
 }

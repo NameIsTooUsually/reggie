@@ -15,6 +15,9 @@ public interface RegionMapper extends BaseMapper<Region> {
 
     int searchTotal();
 
+    //根据id进行查询
+    Region getById(Long id);
+
    /* //添加区域信息
     @Insert("insert into tb_region (name,remark) values(#{name},#{remark})")
     int add(Region region);*/

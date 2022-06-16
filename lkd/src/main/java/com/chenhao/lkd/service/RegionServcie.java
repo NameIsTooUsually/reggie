@@ -17,4 +17,7 @@ public interface RegionServcie {
 
     //根据id查询region信息
     Region getById(Long regionId);
+
+    //根据id修改region
+    boolean updateById(Long id, RegionDto region);
 }

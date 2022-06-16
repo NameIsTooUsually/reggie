@@ -1,7 +1,6 @@
 package com.chenhao.lkd.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chenhao.lkd.mapper.NodeMapper;
 import com.chenhao.lkd.pojo.Business;
@@ -12,10 +11,12 @@ import com.chenhao.lkd.pojo.vo.PageVo;
 import com.chenhao.lkd.service.BusinessService;
 import com.chenhao.lkd.service.NodeService;
 import com.chenhao.lkd.service.RegionServcie;
+import com.chenhao.lkd.service.VmService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +34,12 @@ public class NodeServiceImpl implements NodeService {
     RegionServcie regionServcie;
     @Autowired
     BusinessService businessService;
+    @Autowired
+    VmService vmService;
+
+    //根据regionId进行查询
     @Override
-    public PageVo searchPageByRegionId(Integer pageIndex, Integer pageSize, Integer regionId) {
+    public PageVo searchPageByRegionId(Integer pageIndex, Integer pageSize, Long regionId, Node node1) {
         //判断regionId是否为null
 //        if(null==regionId){
 //            return null;
@@ -49,7 +54,8 @@ public class NodeServiceImpl implements NodeService {
 
         //创建查询调对象
         LambdaQueryWrapper<Node> qw = new LambdaQueryWrapper<>();
-        qw.eq(regionId!=null,Node::getRegionId,regionId);
+        qw.eq(regionId!=null,Node::getRegionId,regionId)
+        .like(node1.getName()!=null,Node::getName, node1.getName());
 
         //创建分页对象
         Page<Node> page = new Page<>();
@@ -80,10 +86,12 @@ public class NodeServiceImpl implements NodeService {
            //查询Business信息，并记录
             Business business = businessService.getById(node.getBusinessId());
             nodeDto.setBusinessType(business);
-
             //添加进集合中
-            list.add(nodeDto);
+            //查询该点位下机器数量
+            int vmSum = vmService.findByNodeId(node.getId());
+            nodeDto.setVmCount(vmSum);
 
+            list.add(nodeDto);
         }
 
         nodePageVo.setCurrentPageRecords(list);
@@ -97,7 +105,7 @@ public class NodeServiceImpl implements NodeService {
 
         return nodePageVo;
     }
-
+    //根据名称进行查询
     @Override
     public List<Node> searchByName(String partnerName) {
         LambdaQueryWrapper<Node> qw = new LambdaQueryWrapper<>();
@@ -105,12 +113,56 @@ public class NodeServiceImpl implements NodeService {
         List<Node> nodes = nodeMapper.selectList(qw);
         return nodes;
     }
-
+    //添加node
     @Override
     public boolean addNode(Node node) {
 
         int insert = nodeMapper.insert(node);
 
         return insert>0;
+    }
+
+    //根据id进行修改
+    @Override
+    public boolean updateNodeById(Long id, Node node) {
+        //创建修改条件对象
+        LambdaQueryWrapper<Node> qw = new LambdaQueryWrapper<>();
+        qw.eq(Node::getId,id);
+        int update = nodeMapper.update(node, qw);
+        return update>0;
+    }
+
+    //根据id进行删除，并判断是否有机器关联
+    @Override
+    public boolean deleteById(Long id) {
+        //判断该id是否有机器关联
+        int count = vmService.findByNodeId(id);
+
+        if(count>0){
+            //返回值大于0，说明有机器被关联
+            return false;
+        }
+
+        //执行删除
+        LambdaQueryWrapper<Node> qw = new LambdaQueryWrapper<>();
+        qw.eq(Node::getId,id);
+        int delete = nodeMapper.delete(qw);
+        return delete>0;
+    }
+
+    //根据合作商id查询节点
+    @Override
+    public Integer searchByPartnerId(Integer id) {
+        //创建查询条件
+        LambdaQueryWrapper<Node> qw = new LambdaQueryWrapper<>();
+        qw.eq(Node::getOwnerId,id);
+        Integer count = nodeMapper.selectCount(qw);
+        return count;
+    }
+
+    @Override
+    public Node getById(Long nodeId) {
+        Node node = nodeMapper.selectById(nodeId);
+        return node;
     }
 }

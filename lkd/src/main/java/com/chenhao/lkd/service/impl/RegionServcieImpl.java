@@ -65,9 +65,25 @@ public class RegionServcieImpl implements RegionServcie {
         return result>0;
     }
 
+    //根据id查询
     @Override
     public Region getById(Long regionId) {
-        Region region = regionMapper.selectById(regionId);
+        Region region = regionMapper.getById(regionId);
         return region;
+    }
+
+    //根据id更新
+    @Override
+    public boolean updateById(Long id, RegionDto regionDto) {
+        //创建region对象
+        Region region = new Region();
+        //设置参数
+        region.setName(regionDto.getRegionName());
+        region.setRemark(regionDto.getRemark());
+        //设置id
+        region.setId(id);
+        int i = regionMapper.updateById(region);
+
+        return i>0;
     }
 }
