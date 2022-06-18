@@ -21,5 +21,7 @@ mybatis-plus:
       # MybatisPlus 设置全局主键生成策略：雪花算法
       id-type: ASSIGN_ID
 
+checkUrl: /backend/**,/front/**,/employee/login,favicon.ico,/user/sendMsg,/user/login
+
 reggie:
   path: C:/img/

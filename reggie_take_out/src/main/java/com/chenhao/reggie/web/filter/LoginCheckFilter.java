@@ -37,8 +37,8 @@ public class LoginCheckFilter implements Filter {
         String uri = req.getRequestURI();
         //设置需要放行的地址
 
-        String[] uris = {"/backend/**","/front/**","/employee/login","favicon.ico","/user/sendMsg","/user/login"};
-//        String[] uris = url.split("\\,");
+//        String[] uris = {"/backend/**","/front/**","/employee/login","favicon.ico","/user/sendMsg","/user/login"};
+        String[] uris = url.split("\\,");
         //判断该路径是否可以直接放行
         if(checkUri(uris,uri)){
             //放行登录相关页面
